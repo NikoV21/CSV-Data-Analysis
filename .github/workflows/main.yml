@@ -1,0 +1,60 @@
+# csv_analysis.py
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import argparse  # To parse command-line arguments
+
+# Step 2: Define a function to analyze the CSV data
+def analyze_csv(csv_file_path):
+    # Load the CSV data
+    df = pd.read_csv(csv_file_path)
+
+    # Display basic information
+    print("Data Summary:")
+    print(df.info())  # Shows column names, data types, and non-null counts
+    print("\nFirst 5 rows of the data:")
+    print(df.head())  # Displays the first 5 rows of the data
+
+    # Describe statistical information
+    print("\nDescriptive statistics:")
+    print(df.describe())  # Shows basic statistical metrics for numeric columns
+
+    # Check for missing data
+    print("\nMissing data in each column:")
+    print(df.isnull().sum())  # Shows the count of missing values per column
+
+    # Correlation heatmap for numerical columns
+    print("\nCorrelation heatmap:")
+    sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+    plt.title('Correlation Heatmap')
+    plt.show()
+
+    # Distribution of a specific column (customizable)
+    column_name = 'YourColumnName'  # Replace with your column name
+    print(f"\nDistribution of '{column_name}':")
+    sns.histplot(df[column_name], kde=True)
+    plt.title(f'Distribution of {column_name}')
+    plt.show()
+
+    # Scatter plot between two columns (customizable)
+    x_column = 'XColumn'  # Replace with your X-axis column
+    y_column = 'YColumn'  # Replace with your Y-axis column
+    print(f"\nScatter plot between '{x_column}' and '{y_column}':")
+    sns.scatterplot(data=df, x=x_column, y=y_column)
+    plt.title(f'Scatter Plot between {x_column} and {y_column}')
+    plt.show()
+
+# Step 3: Define a main function to handle command-line arguments
+def main():
+    parser = argparse.ArgumentParser(description='Analyze a CSV file and generate insights.')
+    parser.add_argument('csv_file', type=str, help='Path to the CSV file to analyze.')
+    
+    args = parser.parse_args()
+    
+    # Call the analyze_csv function with the provided CSV file path
+    analyze_csv(args.csv_file)
+
+# If this script is being run as the main program, call the main function
+if __name__ == "__main__":
+    main()
